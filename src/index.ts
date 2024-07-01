@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { sendWhatsAppMessage } from './services/whatsapp-service';
+import { generateTodaysDate } from './utils/generate-todays-date';
 
 type Env = {
 	ACCOUNT_SID: string;
@@ -16,7 +17,8 @@ app.get('/', async (c) => {
 });
 
 app.get('/jobs', async (c) => {
-	await sendWhatsAppMessage(c.env.ACCOUNT_SID, c.env.AUTH_TOKEN, c.env.RECIEVER_NUMBER, c.env.SENDER_NUMBER, 'hello world', c.env.URL);
+	const todaysDate = generateTodaysDate();
+	await sendWhatsAppMessage(c.env.ACCOUNT_SID, c.env.AUTH_TOKEN, c.env.RECIEVER_NUMBER, c.env.SENDER_NUMBER, todaysDate, c.env.URL);
 
 	return c.json({ message: 'jobs route' });
 });
